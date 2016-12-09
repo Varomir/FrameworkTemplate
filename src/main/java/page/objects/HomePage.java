@@ -4,6 +4,7 @@ import core.Config;
 import core.WebDriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import ru.yandex.qatools.allure.annotations.Step;
 
 import java.time.LocalDate;
 
@@ -15,12 +16,14 @@ public class HomePage extends BasePage {
     private By checkout = By.cssSelector(LEFT_PANEL + " .c2-wrapper-s-checkout .sb-date-field__controls>input");
     private By submit = By.cssSelector(LEFT_PANEL + " button[type='submit']");
 
+    @Step("Open URL")
     public static HomePage open(){
         WebDriverFactory.getInstance().get(Config.getBaseURL());
         LOG.debug("Open home page");
         return new HomePage();
     }
 
+    @Step("set 'city'")
     private void setSearchCityFld(String text){
         String sequence1 = Keys.chord(text, Keys.TAB);
         getElement(search).sendKeys(sequence1);
@@ -32,19 +35,23 @@ public class HomePage extends BasePage {
         return seq;
     }
 
+    @Step("set 'checkin' date")
     private void setCheckinDateFld(LocalDate date){
         getElement(checkin).sendKeys(prepareDateSequence(date));
     }
 
+    @Step("set 'checkout' date")
     private void setCheckoutDateFld(LocalDate date){
         getElement(checkout).sendKeys(prepareDateSequence(date));
     }
 
+    @Step("click 'Search' button")
     private ResultPage clickSearchBtn(){
         getElement(submit).click();
         return new ResultPage();
     }
 
+    @Step("Search hotels")
     public ResultPage searchHotels(String city, LocalDate checkin, LocalDate checkout){
         setSearchCityFld(city);
         setCheckinDateFld(checkin);
